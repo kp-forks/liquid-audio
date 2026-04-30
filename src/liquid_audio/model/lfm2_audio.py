@@ -5,20 +5,22 @@ import math
 from collections.abc import Generator
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import ClassVar, Literal, Self, TypedDict
+from typing import TYPE_CHECKING, ClassVar, Literal, Self, TypedDict
 
 import torch
 from accelerate import init_on_device, load_checkpoint_in_model
 from einops import rearrange
 from torch import nn
 from transformers import Lfm2Config, Lfm2Model
-from transformers.models.lfm2.modeling_lfm2 import Lfm2HybridConvCache
 
 from liquid_audio.model.conformer.encoder import ConformerEncoder, ConformerEncoderConfig
 from liquid_audio.model.mlp import MLP
 from liquid_audio.model.transformer import MHA, RawLMBackbone, SharedEmbedding, StandardBlock
 from liquid_audio.processor import PreprocessorConfig
 from liquid_audio.utils import LFMModality, get_model_dir, mel2emb_len, module_exists
+
+if TYPE_CHECKING:
+    from transformers.models.lfm2.modeling_lfm2 import Lfm2HybridConvCache
 
 
 class LFM2_HFConfig(TypedDict):
